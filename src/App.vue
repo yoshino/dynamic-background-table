@@ -1,17 +1,19 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" />
+    <div class="content">
+      <h1>Dunamic Background Table</h1>
+      <DynamicBackgroundTable />
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import HelloWorld from "./components/HelloWorld.vue";
+import DynamicBackgroundTable from "./components/DynamicBackgroundTable.vue";
 
 @Component({
   components: {
-    HelloWorld
+    DynamicBackgroundTable
   }
 })
 export default class App extends Vue {}
@@ -25,5 +27,12 @@ export default class App extends Vue {}
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 </style>
