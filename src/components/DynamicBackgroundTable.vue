@@ -1,6 +1,5 @@
 <template>
   <div class="dynamic-background-table">
-    <button v-on:click="setRandomValues">Set Random Values</button>
     <table>
       <tr>
         <th>Name</th>
@@ -8,7 +7,7 @@
         <th>Calory</th>
       </tr>
       <tr>
-        <td>Apple</td>
+        <td>{{ name1 }}</td>
         <td
           v-bind:style="{
             background: priceBackGround(price1)
@@ -25,7 +24,7 @@
         </td>
       </tr>
       <tr>
-        <td>Orange</td>
+        <td>{{ name2 }}</td>
         <td
           v-bind:style="{
             background: priceBackGround(price2)
@@ -42,7 +41,7 @@
         </td>
       </tr>
       <tr>
-        <td>Banana</td>
+        <td>{{ name3 }}</td>
         <td
           v-bind:style="{
             background: priceBackGround(price3)
@@ -63,11 +62,18 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 import { TweenLite } from "gsap";
+import { Product } from "@/types/product";
 
 @Component
-export default class SimpleList extends Vue {
+export default class DynamicBackgroundTable extends Vue {
+  @Prop()
+  products!: Product[];
+
+  name1 = "";
+  name2 = "";
+  name3 = "";
   price1 = 0;
   price2 = 0;
   price3 = 0;
@@ -101,45 +107,52 @@ export default class SimpleList extends Vue {
   }
 
   created() {
-    this.setRandomValues();
+    this.updateDynamically();
   }
 
-  setRandomValues() {
-    const newPrice1 = Math.round(Math.random() * 100);
+  @Watch("products")
+  onProductsChanged() {
+    this.updateDynamically();
+  }
+
+  updateDynamically() {
+    const product1 = this.products[0];
+    const product2 = this.products[1];
+    const product3 = this.products[2];
+
+    this.name1 = product1.name;
+    this.name2 = product2.name;
+    this.name3 = product3.name;
+
     TweenLite.to(this.$data, 1, {
-      price1: newPrice1
+      price1: product1.price
     }).eventCallback("onStart", () => {
-      this.displayPrice1 = newPrice1;
+      this.displayPrice1 = product1.price;
     });
-    const newPrice2 = Math.round(Math.random() * 100);
     TweenLite.to(this.$data, 1, {
-      price2: newPrice2
+      price2: product2.price
     }).eventCallback("onStart", () => {
-      this.displayPrice2 = newPrice2;
+      this.displayPrice2 = product2.price;
     });
-    const newPrice3 = Math.round(Math.random() * 100);
     TweenLite.to(this.$data, 1, {
-      price3: newPrice3
+      price3: product3.price
     }).eventCallback("onStart", () => {
-      this.displayPrice3 = newPrice3;
+      this.displayPrice3 = product3.price;
     });
-    const newCalory1 = Math.round(Math.random() * 100);
     TweenLite.to(this.$data, 1, {
-      calory1: newCalory1
+      calory1: product1.calory
     }).eventCallback("onStart", () => {
-      this.displayCalory1 = newCalory1;
+      this.displayCalory1 = product1.calory;
     });
-    const newCalory2 = Math.round(Math.random() * 100);
     TweenLite.to(this.$data, 1, {
-      calory2: newCalory2
+      calory2: product2.calory
     }).eventCallback("onStart", () => {
-      this.displayCalory2 = newCalory2;
+      this.displayCalory2 = product2.calory;
     });
-    const newCalory3 = Math.round(Math.random() * 100);
     TweenLite.to(this.$data, 1, {
-      calory3: newCalory3
+      calory3: product3.calory
     }).eventCallback("onStart", () => {
-      this.displayCalory3 = newCalory3;
+      this.displayCalory3 = product3.calory;
     });
   }
 }
