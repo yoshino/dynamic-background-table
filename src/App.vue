@@ -57,7 +57,7 @@ export default class App extends Vue {
   display: flex;
 
   &__title {
-    margin: 0px 20px 40px 0px;
+    margin: 0px 20px 60px 0px;
   }
 
   &__button {
