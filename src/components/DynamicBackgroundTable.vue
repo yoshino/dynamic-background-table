@@ -119,15 +119,15 @@ export default class DynamicBackgroundTable extends Vue {
   }
 
   created() {
-    this.updateDynamically();
+    this.transitionUpdate();
   }
 
   @Watch("products")
   onProductsChanged() {
-    this.updateDynamically();
+    this.transitionUpdate();
   }
 
-  updateDynamically() {
+  transitionUpdate() {
     for (const [index, product] of this.products.entries()) {
       const nameKey = `name${String(index + 1)}`;
       const priceKey = `price${String(index + 1)}`;
