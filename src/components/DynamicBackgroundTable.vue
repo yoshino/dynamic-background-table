@@ -80,7 +80,6 @@ export default class DynamicBackgroundTable extends Vue {
   calory1 = 0;
   calory2 = 0;
   calory3 = 0;
-
   displayPrice1 = 0;
   displayPrice2 = 0;
   displayPrice3 = 0;
@@ -88,12 +87,23 @@ export default class DynamicBackgroundTable extends Vue {
   displayCalory2 = 0;
   displayCalory3 = 0;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: any; // MEMEO: Object[key]() （ブラケット記法）のために型安全を崩している
+
   get priceSum() {
-    return this.price1 + this.price2 + this.price3;
+    let sum = 0;
+    for (const product of this.products) {
+      sum += product.price;
+    }
+    return sum;
   }
 
   get calorySum() {
-    return this.calory1 + this.calory2 + this.calory3;
+    let sum = 0;
+    for (const product of this.products) {
+      sum += product.calory;
+    }
+    return sum;
   }
 
   priceBackGround(value: number) {
@@ -116,44 +126,27 @@ export default class DynamicBackgroundTable extends Vue {
   }
 
   updateDynamically() {
-    const product1 = this.products[0];
-    const product2 = this.products[1];
-    const product3 = this.products[2];
+    for (const [index, product] of this.products.entries()) {
+      const nameKey = `name${String(index + 1)}`;
+      const priceKey = `price${String(index + 1)}`;
+      const caloryKey = `calory${String(index + 1)}`;
+      const displayPriceKey = `displayPrice${String(index + 1)}`;
+      const displayCaloryKey = `displayCalory${String(index + 1)}`;
 
-    this.name1 = product1.name;
-    this.name2 = product2.name;
-    this.name3 = product3.name;
+      this[nameKey] = product.name;
 
-    TweenLite.to(this.$data, 1, {
-      price1: product1.price
-    }).eventCallback("onStart", () => {
-      this.displayPrice1 = product1.price;
-    });
-    TweenLite.to(this.$data, 1, {
-      price2: product2.price
-    }).eventCallback("onStart", () => {
-      this.displayPrice2 = product2.price;
-    });
-    TweenLite.to(this.$data, 1, {
-      price3: product3.price
-    }).eventCallback("onStart", () => {
-      this.displayPrice3 = product3.price;
-    });
-    TweenLite.to(this.$data, 1, {
-      calory1: product1.calory
-    }).eventCallback("onStart", () => {
-      this.displayCalory1 = product1.calory;
-    });
-    TweenLite.to(this.$data, 1, {
-      calory2: product2.calory
-    }).eventCallback("onStart", () => {
-      this.displayCalory2 = product2.calory;
-    });
-    TweenLite.to(this.$data, 1, {
-      calory3: product3.calory
-    }).eventCallback("onStart", () => {
-      this.displayCalory3 = product3.calory;
-    });
+      TweenLite.to(this.$data, 1, {
+        [priceKey]: product.price
+      }).eventCallback("onStart", () => {
+        this[displayPriceKey] = product.price;
+      });
+
+      TweenLite.to(this.$data, 1, {
+        [caloryKey]: product.calory
+      }).eventCallback("onStart", () => {
+        this[displayCaloryKey] = product.calory;
+      });
+    }
   }
 }
 </script>
