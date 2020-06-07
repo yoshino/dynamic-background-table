@@ -66,6 +66,8 @@ import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 import { TweenLite } from "gsap";
 import { Product } from "@/types/product";
 
+const duration = 0.5;
+
 @Component
 export default class DynamicBackgroundTable extends Vue {
   @Prop()
@@ -135,13 +137,13 @@ export default class DynamicBackgroundTable extends Vue {
 
       this[nameKey] = product.name;
 
-      TweenLite.to(this.$data, 1, {
+      TweenLite.to(this.$data, duration, {
         [priceKey]: product.price
       }).eventCallback("onStart", () => {
         this[displayPriceKey] = product.price;
       });
 
-      TweenLite.to(this.$data, 1, {
+      TweenLite.to(this.$data, duration, {
         [caloryKey]: product.calory
       }).eventCallback("onStart", () => {
         this[displayCaloryKey] = product.calory;
